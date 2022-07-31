@@ -16,3 +16,6 @@ yarn-error.log*
 
 # Next.js
 /.next
+
+# Envionment variables used by the app
+.env
