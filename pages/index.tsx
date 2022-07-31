@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import {
   Box,
   CircularProgress
 } from '@mui/material';
 
+import BaseLayout from '@/layouts/BaseLayout';
 import Router from 'next/router';
 
 const LoadingPage = () => {
@@ -16,7 +17,7 @@ const LoadingPage = () => {
       }
     }).then(res => {
       if (res.status === 200) {
-        Router.push('/app');
+        Router.push('/dashboard');
       } else {
         Router.push('/login');
       }
@@ -35,3 +36,7 @@ const LoadingPage = () => {
 }
 
 export default LoadingPage;
+
+LoadingPage.getLayout = function getLayout(page: ReactElement) {
+  return <BaseLayout>{page}</BaseLayout>;
+};
