@@ -10,7 +10,7 @@ import Router from 'next/router';
 const LoadingPage = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
-    fetch('http://localhost:3001/auth/token', {
+    fetch(`${process.env.CORE_API}/auth/token`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`
