@@ -1,16 +1,16 @@
 import { ReactElement, useEffect } from 'react';
+import Router from 'next/router';
 import {
   Box,
   CircularProgress
 } from '@mui/material';
 
 import BaseLayout from '@/layouts/BaseLayout';
-import Router from 'next/router';
 
 const LoadingPage = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
-    fetch(`${process.env.CORE_API}/auth/token`, {
+    fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/token`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`

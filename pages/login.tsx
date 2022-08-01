@@ -33,7 +33,7 @@ const LoginPage = () => {
             setEmptyPassword(true);
         }
         if (email !== "" && password !== "") {
-            const login = await fetch(`${process.env.CORE_API}/auth/login`, {
+            const login = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

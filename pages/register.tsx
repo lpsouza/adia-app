@@ -39,7 +39,7 @@ const RegisterPage = () => {
             setEmptyPassword(true);
         }
         if (name !== "" && email !== "" && password !== "") {
-            const login = await fetch(`${process.env.CORE_API}/auth/register`, {
+            const login = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
