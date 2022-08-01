@@ -29,7 +29,7 @@ const PageTitle: FC<PageTitleProps> = ({
         <Typography variant="subtitle2">{subHeading}</Typography>
       </Grid>
       <Grid item>
-        <Button
+        {docs !== '' && <Button
           href={docs}
           target="_blank"
           rel="noopener noreferrer"
@@ -38,7 +38,7 @@ const PageTitle: FC<PageTitleProps> = ({
           startIcon={<AddTwoToneIcon fontSize="small" />}
         >
           {heading} Documentation
-        </Button>
+        </Button>}
       </Grid>
     </Grid>
   );
