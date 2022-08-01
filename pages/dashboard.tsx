@@ -1,10 +1,22 @@
 import { ReactElement } from "react";
 
 import SidebarLayout from "@/layouts/SidebarLayout";
+import Head from "next/head";
+import PageTitleWrapper from "@/components/PageTitleWrapper";
+import PageTitle from "@/components/PageTitle";
 
 const DashboardPage = () => {
     return (
-        <h1>Dashboard</h1>
+        <>
+            <Head>
+                <title>Dashboard</title>
+            </Head>
+            <PageTitleWrapper>
+                <PageTitle
+                    heading="Dashboard"
+                />
+            </PageTitleWrapper>
+        </>
     );
 }
 
