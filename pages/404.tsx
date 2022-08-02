@@ -14,10 +14,10 @@ const Error404Page = () => {
       margin: "auto",
     }}>
       <Card>
-        <CardHeader title="Error 404" />
+        <CardHeader title="Erro 404" />
         <Divider />
         <CardContent>
-          Page not found
+          Página não encontrada.
         </CardContent>
       </Card>
     </Box>
