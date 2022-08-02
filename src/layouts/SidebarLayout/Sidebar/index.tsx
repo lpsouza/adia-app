@@ -9,7 +9,6 @@ import {
   styled,
   Divider,
   useTheme,
-  Button,
   lighten,
   darken
 } from '@mui/material';
@@ -73,7 +72,7 @@ function Sidebar() {
           />
           <SidebarMenu />
         </Scrollbar>
-        <Divider
+        {/* <Divider
           sx={{
             background: theme.colors.alpha.trueWhite[10]
           }}
@@ -90,7 +89,7 @@ function Sidebar() {
           >
             Upgrade to PRO
           </Button>
-        </Box>
+        </Box> */}
       </SidebarWrapper>
       <Drawer
         sx={{

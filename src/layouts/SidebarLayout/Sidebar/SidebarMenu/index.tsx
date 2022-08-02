@@ -15,7 +15,8 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 
 import {
   Home,
-  BrightnessLowTwoTone,
+  People,
+  Terminal
 } from '@mui/icons-material';
 
 const MenuWrapper = styled(Box)(
@@ -172,9 +173,9 @@ function SidebarMenu() {
           <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
-                <NextLink href="/dashboard" passHref>
+                <NextLink href="/" passHref>
                   <Button
-                    className={currentRoute === '="/dashboard' ? 'active' : ''}
+                    className={currentRoute === '="/' ? 'active' : ''}
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
@@ -206,7 +207,7 @@ function SidebarMenu() {
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<BrightnessLowTwoTone />}
+                    startIcon={<People />}
                   >
                     Usuários
                   </Button>
@@ -221,7 +222,7 @@ function SidebarMenu() {
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<BrightnessLowTwoTone />}
+                    startIcon={<Terminal />}
                   >
                     Aplicativos
                   </Button>
