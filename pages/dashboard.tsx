@@ -16,7 +16,7 @@ const DashboardPage = () => {
             }
         }).then(res => {
             if (res.status !== 200) {
-                Router.push('/login');
+                Router.push('/auth/login');
             }
         });
     });

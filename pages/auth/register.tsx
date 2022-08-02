@@ -15,37 +15,40 @@ import {
 import BaseLayout from "@/layouts/BaseLayout";
 import { LoadingButton } from "@mui/lab";
 
-const LoginPage = () => {
+const RegisterPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+    const [name, setName] = useState("");
+    const [emptyName, setEmptyName] = useState(false);
     const [email, setEmail] = useState("");
     const [emptyEmail, setEmptyEmail] = useState(false);
     const [password, setPassword] = useState("");
     const [emptyPassword, setEmptyPassword] = useState(false);
     const handleClick = async () => {
         setLoading(true);
+        setEmptyName(false);
         setEmptyEmail(false);
         setEmptyPassword(false);
+        if (name === "") {
+            setEmptyName(true);
+        }
         if (email === "") {
             setEmptyEmail(true);
         }
         if (password === "") {
             setEmptyPassword(true);
         }
-        if (email !== "" && password !== "") {
-            const login = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/login`, {
+        if (name !== "" && email !== "" && password !== "") {
+            const login = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ name, email, password })
             });
 
-            if (login.status === 200) {
-                const data = await login.json();
-                localStorage.setItem("access_token", data.access);
-                localStorage.setItem("refresh_token", data.refresh);
-                window.location.href = "/";
+            if (login.status === 201) {
+                window.location.href = "/auth/login";
             } else {
                 setError(true);
             }
@@ -60,11 +63,20 @@ const LoginPage = () => {
             margin: "auto",
         }}>
             <Card>
-                <CardHeader title="Login" />
+                <CardHeader title="Register new user" />
                 <Divider />
                 <CardContent>
                     <Stack spacing={2}>
-                        {error && <Alert variant="filled" severity="error">Email or password is invalid</Alert>}
+                        {error && <Alert variant="filled" severity="error">Error to create a new user. Please try again.</Alert>}
+                        <TextField
+                            required
+                            fullWidth
+                            id="name"
+                            label="Full Name"
+                            onChange={e => setName(e.target.value)}
+                            error={emptyName}
+                            helperText={emptyName ? "Full Name is required" : ""}
+                        />
                         <TextField
                             required
                             fullWidth
@@ -92,20 +104,20 @@ const LoginPage = () => {
                         loading={loading}
                         variant="contained"
                         fullWidth
-                    >Log in</LoadingButton>
+                    >Register</LoadingButton>
                     <Button
-                        onClick={() => window.location.href = "/register"}
+                        onClick={() => window.location.href = "/auth/login"}
                         variant="outlined"
                         fullWidth
-                    >Register</Button>
+                    >Log in</Button>
                 </CardActions>
             </Card>
         </Box >
     );
 }
 
-export default LoginPage;
+export default RegisterPage;
 
-LoginPage.getLayout = function getLayout(page: ReactElement) {
+RegisterPage.getLayout = function getLayout(page: ReactElement) {
     return <BaseLayout>{page}</BaseLayout>;
 };

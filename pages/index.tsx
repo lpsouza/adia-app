@@ -19,7 +19,7 @@ const LoadingPage = () => {
       if (res.status === 200) {
         Router.push('/dashboard');
       } else {
-        Router.push('/login');
+        Router.push('/auth/login');
       }
     });
   });
