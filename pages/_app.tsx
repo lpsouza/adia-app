@@ -55,7 +55,7 @@ function TokyoApp(props: TokyoAppProps) {
           window.localStorage.setItem('refresh_token', token.refresh);
           Router.push('/');
         }
-        if (Router.asPath !== '/auth/login') {
+        if (Router.asPath !== '/auth/login' && Router.asPath !== '/auth/register') {
           Router.push('/auth/login');
         }
       }
