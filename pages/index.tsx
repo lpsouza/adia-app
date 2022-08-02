@@ -1,42 +1,27 @@
-import { ReactElement, useEffect } from 'react';
-import Router from 'next/router';
-import {
-  Box,
-  CircularProgress
-} from '@mui/material';
+import { ReactElement } from "react";
 
-import BaseLayout from '@/layouts/BaseLayout';
+import SidebarLayout from "@/layouts/SidebarLayout";
+import Head from "next/head";
+import PageTitleWrapper from "@/components/PageTitleWrapper";
+import PageTitle from "@/components/PageTitle";
 
-const LoadingPage = () => {
-  useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
-    fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/token`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    }).then(res => {
-      if (res.status === 200) {
-        Router.push('/dashboard');
-      } else {
-        Router.push('/auth/login');
-      }
-    });
-  });
-
-  return (
-    <Box sx={{
-      width: 100,
-      height: 100,
-      margin: "auto",
-    }}>
-      <CircularProgress />
-    </Box>
-  );
+const IndexPage = () => {
+    return (
+        <>
+            <Head>
+                <title>Inicial</title>
+            </Head>
+            <PageTitleWrapper>
+                <PageTitle
+                    heading="Inicial"
+                />
+            </PageTitleWrapper>
+        </>
+    );
 }
 
-export default LoadingPage;
+export default IndexPage;
 
-LoadingPage.getLayout = function getLayout(page: ReactElement) {
-  return <BaseLayout>{page}</BaseLayout>;
+IndexPage.getLayout = function getLayout(page: ReactElement) {
+    return <SidebarLayout>{page}</SidebarLayout>;
 };
