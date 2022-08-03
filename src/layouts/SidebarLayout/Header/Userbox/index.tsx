@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react';
-
+import { useEffect, useRef, useState } from 'react';
+import md5 from "blueimp-md5";
 
 import {
+  Avatar,
   Box,
   Button,
   Divider,
@@ -54,11 +55,16 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
-    email: 'pike@test.com'
-  };
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState('');
+
+
+  useEffect(() => {
+    setName(window.localStorage.getItem('name') || 'John Doe');
+    setEmail(window.localStorage.getItem('email') || 'john.doe@foobar.com');
+    setAvatar(`https://www.gravatar.com/avatar/${md5(window.localStorage.getItem('email'))}?d=monsterid`);
+  });
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -72,20 +78,19 @@ function HeaderUserbox() {
   };
 
   const handleLogoff = (): void => {
-    window.localStorage.removeItem('access_token');
-    window.localStorage.removeItem('refresh_token');
+    window.localStorage.clear();
     Router.push('/auth/login');
   }
 
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        {/* <Avatar variant="rounded" alt={user.name} src={user.avatar} /> */}
+        <Avatar variant="rounded" alt={name} src={avatar} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.email}
+              {email}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -107,11 +112,11 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 150 }} display="flex">
-          {/* <Avatar variant="rounded" alt={user.name} src={user.avatar} /> */}
+          <Avatar variant="rounded" alt={name} src={avatar} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.email}
+              {email}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

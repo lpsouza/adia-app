@@ -44,8 +44,18 @@ const LoginPage = () => {
 
       if (login.status === 200) {
         const data = await login.json();
-        localStorage.setItem("access_token", data.access);
-        localStorage.setItem("refresh_token", data.refresh);
+        window.localStorage.setItem("access_token", data.access);
+        window.localStorage.setItem("refresh_token", data.refresh);
+        const tokenInfo = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/token`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.access}`
+          }
+        });
+        const tokenData = await tokenInfo.json();
+        window.localStorage.setItem("name", tokenData.name);
+        window.localStorage.setItem("email", tokenData.email);
         Router.push("/");
       } else {
         setError(true);
