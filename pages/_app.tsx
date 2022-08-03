@@ -43,7 +43,11 @@ function TokyoApp(props: TokyoAppProps) {
           Authorization: `Bearer ${accessToken}`
         }
       })
-      if (res.status !== 200) {
+      if (res.status === 200) {
+        const data = await res.json();
+        window.localStorage.setItem('email', data.email);
+        window.localStorage.setItem('name', data.name);
+      } else {
         const res = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/token`, {
           method: 'POST',
           headers: { ContentType: 'application/json' },
@@ -55,7 +59,8 @@ function TokyoApp(props: TokyoAppProps) {
           window.localStorage.setItem('refresh_token', token.refresh);
           Router.push('/');
         }
-        if (Router.pathname !== '/auth/login' && Router.pathname !== '/auth/register' && Router.pathname !== '/404') {
+        const excludePages = ['/auth/login', '/auth/register', '/404']
+        if (!excludePages.includes(Router.pathname)) {
           Router.push('/auth/login');
         }
       }
