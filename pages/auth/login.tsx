@@ -1,4 +1,5 @@
 import { ReactElement, useState } from "react";
+import Router from "next/router";
 import {
   Alert,
   Box,
@@ -45,7 +46,7 @@ const LoginPage = () => {
         const data = await login.json();
         localStorage.setItem("access_token", data.access);
         localStorage.setItem("refresh_token", data.refresh);
-        window.location.href = "/";
+        Router.push("/");
       } else {
         setError(true);
       }
