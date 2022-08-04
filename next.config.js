@@ -2,7 +2,13 @@ const withImages = require('next-images');
 
 const redirects = {
   async redirects() {
-    return [];
+    return [
+      {
+        source: '/core/users',
+        destination: '/core/users/list',
+        permanent: true
+      }
+    ];
   }
 };
 
