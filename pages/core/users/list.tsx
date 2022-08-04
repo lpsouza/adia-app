@@ -48,8 +48,8 @@ const UsersPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map(user => (
-                <TableRow>
+              {users.map((user, key) => (
+                <TableRow key={key}>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.role}</TableCell>
