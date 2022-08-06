@@ -1,6 +1,6 @@
 # A.D.I.A. Frontend
 
-This is the frontend of the A.D.I.A. (Automated Digital Intelligence Assistant). The web application is based on the [Tokyo Free Black Typescript Next.js Admin Dashboard](https://bloomui.com/product/tokyo-free-black-nextjs-typescript-material-ui-admin-dashboard/) using Next.js and Material-UI.
+This is the frontend of the A.D.I.A. (Automated Digital Intelligence Assistant).
 
 ## A.D.I.A. Architecture
 
