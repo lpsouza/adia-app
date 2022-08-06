@@ -13,7 +13,6 @@ import {
   TextField
 } from "@mui/material";
 
-import BaseLayout from "@/layouts/BaseLayout";
 import { LoadingButton } from "@mui/lab";
 
 const LoginPage = () => {
@@ -68,7 +67,7 @@ const LoginPage = () => {
     <Box sx={{
       width: 300,
       height: 300,
-      margin: "auto",
+      margin: "auto"
     }}>
       <Card>
         <CardHeader title="Entrar" />
@@ -116,7 +115,3 @@ const LoginPage = () => {
 }
 
 export default LoginPage;
-
-LoginPage.getLayout = function getLayout(page: ReactElement) {
-  return <BaseLayout>{page}</BaseLayout>;
-};

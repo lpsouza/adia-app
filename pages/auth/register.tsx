@@ -12,7 +12,6 @@ import {
   TextField
 } from "@mui/material";
 
-import BaseLayout from "@/layouts/BaseLayout";
 import { LoadingButton } from "@mui/lab";
 
 const RegisterPage = () => {
@@ -117,7 +116,3 @@ const RegisterPage = () => {
 }
 
 export default RegisterPage;
-
-RegisterPage.getLayout = function getLayout(page: ReactElement) {
-  return <BaseLayout>{page}</BaseLayout>;
-};

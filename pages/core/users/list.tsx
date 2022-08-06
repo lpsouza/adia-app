@@ -1,70 +1,88 @@
 import { ReactElement, useEffect, useState } from "react";
 import Head from "next/head";
 import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow
+  Box, Button, ButtonGroup, Card, CardContent, Stack,
 } from "@mui/material";
+import {
+  DataGrid,
+  GridColDef
+} from '@mui/x-data-grid';
+import {
+  Add,
+  Edit,
+  Remove
+} from "@mui/icons-material";
 
-import SidebarLayout from "@/layouts/SidebarLayout";
-import PageTitleWrapper from "@/components/PageTitleWrapper";
-import PageTitle from "@/components/PageTitle";
-import CoreService from "@/service/core";
+import Router from "next/router";
+import CoreService from "@/services/core";
+import SideMenuLayout from "@/components/SideMenuLayout";
 
-const UsersPage = () => {
-  const [users, setUsers] = useState([]);
+const UsersListPage = () => {
+  const [rows, setRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([] as any);
+
+  const columns: GridColDef[] = [
+    { field: "name", headerName: "Nome completo", width: 200 },
+    { field: "email", headerName: "Email", width: 200 },
+    { field: "role", headerName: "Função", width: 150 }
+  ];
+
   useEffect(() => {
     (async () => {
-      setUsers(await CoreService.users.get());
+      setRows(await CoreService.users.get());
     })();
   }, []);
 
   return (
-    <>
+    <SideMenuLayout>
       <Head>
         <title>Usuários</title>
       </Head>
-      <PageTitleWrapper>
-        <PageTitle
-          heading="Usuários"
-        />
-      </PageTitleWrapper>
       <Box
         sx={{
-          padding: 2
+          padding: 2,
         }}
       >
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Nome</TableCell>
-                <TableCell>E-mail</TableCell>
-                <TableCell>Função</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {users.map((user, key) => (
-                <TableRow key={key}>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Card>
+          <CardContent>
+            <Stack spacing={2}>
+              <ButtonGroup variant="contained">
+                <Button
+                  startIcon={<Add />}
+                  onClick={() => Router.push("/core/users/add")}
+                >
+                  Adicionar
+                </Button>
+                <Button
+                  startIcon={<Edit />}
+                  disabled={selectedRows.length !== 1}
+                >
+                  Editar
+                </Button>
+                <Button
+                  startIcon={<Remove />}
+                  disabled={selectedRows.length === 0}
+                  color="error"
+                >
+                  Deletar
+                </Button>
+              </ButtonGroup>
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                getRowId={(row) => row.email}
+                checkboxSelection
+                autoHeight
+                onSelectionModelChange={(selectedRows) => setSelectedRows(selectedRows)}
+              />
+            </Stack>
+          </CardContent>
+        </Card>
       </Box>
-    </>
+    </SideMenuLayout>
   );
 }
 
-export default UsersPage;
-
-UsersPage.getLayout = function getLayout(page: ReactElement) {
-  return <SidebarLayout>{page}</SidebarLayout>;
-};
+export default UsersListPage;

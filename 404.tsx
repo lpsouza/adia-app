@@ -12,7 +12,6 @@ const Error404Page = () => {
       width: 600,
       height: 100,
       margin: "auto",
-      position: "absolute"
     }}>
       <Card>
         <CardHeader title="Erro 404" />

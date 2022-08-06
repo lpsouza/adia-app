@@ -1,27 +1,21 @@
-import { ReactElement } from "react";
+import { Box, Button } from '@mui/material'
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import SideMenuLayout from '@/components/SideMenuLayout'
 
-import SidebarLayout from "@/layouts/SidebarLayout";
-import Head from "next/head";
-import PageTitleWrapper from "@/components/PageTitleWrapper";
-import PageTitle from "@/components/PageTitle";
-
-const IndexPage = () => {
-    return (
-        <>
-            <Head>
-                <title>Inicial</title>
-            </Head>
-            <PageTitleWrapper>
-                <PageTitle
-                    heading="Inicial"
-                />
-            </PageTitleWrapper>
-        </>
-    );
+const Home: NextPage = () => {
+  return (
+    <SideMenuLayout>
+      <>
+        <Head>
+          <title>Inicial</title>
+        </Head>
+        <Box sx={{ padding: 3 }}>
+          <h1>Inicial</h1>
+        </Box>
+      </>
+    </SideMenuLayout>
+  )
 }
 
-export default IndexPage;
-
-IndexPage.getLayout = function getLayout(page: ReactElement) {
-    return <SidebarLayout>{page}</SidebarLayout>;
-};
+export default Home
