@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 
 import { LoadingButton } from "@mui/lab";
+import CoreService from "@/services/CoreService";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -33,25 +34,13 @@ const LoginPage = () => {
       setEmptyPassword(true);
     }
     if (email !== "" && password !== "") {
-      const login = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-      });
+      const login = await CoreService.auth.login(email, password);
 
       if (login.status === 200) {
         const data = await login.json();
         window.localStorage.setItem("access_token", data.access);
         window.localStorage.setItem("refresh_token", data.refresh);
-        const tokenInfo = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/token`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${data.access}`
-          }
-        });
+        const tokenInfo = await CoreService.auth.token(data.access)
         const tokenData = await tokenInfo.json();
         window.localStorage.setItem("name", tokenData.name);
         window.localStorage.setItem("email", tokenData.email);

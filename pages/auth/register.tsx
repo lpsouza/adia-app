@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import { LoadingButton } from "@mui/lab";
+import CoreService from "@/services/CoreService";
 
 const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
@@ -38,15 +39,9 @@ const RegisterPage = () => {
       setEmptyPassword(true);
     }
     if (name !== "" && email !== "" && password !== "") {
-      const login = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, email, password })
-      });
+      const register = await CoreService.auth.register(name, email, password);
 
-      if (login.status === 201) {
+      if (register.status === 201) {
         window.location.href = "/auth/login";
       } else {
         setError(true);

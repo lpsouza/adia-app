@@ -14,7 +14,7 @@ import {
 } from "@mui/icons-material";
 
 import Router from "next/router";
-import CoreService from "@/services/core";
+import CoreService from "@/services/CoreService";
 import SideMenuLayout from "@/components/SideMenuLayout";
 
 const UsersListPage = () => {

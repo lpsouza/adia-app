@@ -1,3 +1,4 @@
+import CoreService from "@/services/CoreService";
 import Router from "next/router";
 import { useEffect } from "react";
 
@@ -7,22 +8,13 @@ const SessionLogin = () => {
     (async () => {
       const accessToken = window.localStorage.getItem('access_token');
       const refreshToken = window.localStorage.getItem('refresh_token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/token`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
+      const res = await CoreService.auth.token(accessToken || "");
       if (res.status === 200) {
         const data = await res.json();
         window.localStorage.setItem('email', data.email);
         window.localStorage.setItem('name', data.name);
       } else {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_CORE_API}/auth/token`, {
-          method: 'POST',
-          headers: { ContentType: 'application/json' },
-          body: JSON.stringify({ refreshToken })
-        });
+        const res = await CoreService.auth.refresh(refreshToken || "");
         if (res.status === 200) {
           const token = await res.json();
           window.localStorage.setItem('access_token', token.access);
