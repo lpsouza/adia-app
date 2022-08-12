@@ -1,11 +1,12 @@
-import { ReactElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import {
   Box, Button, ButtonGroup, Card, CardContent, Stack,
 } from "@mui/material";
 import {
   DataGrid,
-  GridColDef
+  GridColDef,
+  ptBR,
 } from '@mui/x-data-grid';
 import {
   Add,
@@ -46,9 +47,10 @@ const UsersListPage = () => {
         <Card>
           <CardContent>
             <Stack spacing={2}>
-              <ButtonGroup variant="contained">
+              <ButtonGroup variant="outlined">
                 <Button
                   startIcon={<Add />}
+                  disabled={selectedRows.length > 0}
                   onClick={() => Router.push("/core/users/add")}
                 >
                   Adicionar
@@ -56,6 +58,10 @@ const UsersListPage = () => {
                 <Button
                   startIcon={<Edit />}
                   disabled={selectedRows.length !== 1}
+                  onClick={() => Router.push({
+                    pathname: "/core/users/edit",
+                    query: { email: selectedRows[0] }
+                  })}
                 >
                   Editar
                 </Button>
@@ -76,6 +82,7 @@ const UsersListPage = () => {
                 checkboxSelection
                 autoHeight
                 onSelectionModelChange={(selectedRows) => setSelectedRows(selectedRows)}
+                localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
               />
             </Stack>
           </CardContent>

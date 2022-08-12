@@ -8,4 +8,16 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+const redirects = () => [
+  {
+    source: '/core/users',
+    destination: '/core/users/list',
+    permanent: true,
+  }
+];
+
+
+module.exports = {
+  ...nextConfig,
+  redirects,
+}

@@ -1,19 +1,21 @@
+import CoreService from "@/services/CoreService";
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, Card, CardActions, CardContent, Stack, TextField } from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent, CardHeader, Stack, TextField } from "@mui/material";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 
-const UserForm = (user: any) => {
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: ""
-  });
+const UserForm = ({ email }: any) => {
+  const [name, setName] = useState("");
 
   useEffect(() => {
-    if (user) {
-      setData(user);
-    }
+    (async () => {
+      if (email) {
+        const user = await CoreService.users.get(email);
+        if (user) {
+          setName(user.name);
+        }
+      }
+    })();
   }, []);
 
   return (
@@ -24,23 +26,22 @@ const UserForm = (user: any) => {
         }}
       >
         <Card>
+          <CardHeader title={!email && "Adicionando novo usuário" || "Editando usuário"} />
           <CardContent>
-            <div>nome {user.name}</div>
-            <div>nome {data.name}</div>
             <Stack spacing={2}>
               <TextField
                 id="name"
                 label="Nome completo"
                 variant="outlined"
                 fullWidth
-                value={data.name}
+                value={name}
               />
               <TextField
                 id="email"
                 label="Email"
                 variant="outlined"
                 fullWidth
-              // value={email}
+                value={email}
               />
               <TextField
                 id="password"
@@ -57,7 +58,7 @@ const UserForm = (user: any) => {
               // onClick={ }
               // loading={ }
               variant="contained"
-            >Adicionar</LoadingButton>
+            >{!email && "Adicionar" || "Editar"}</LoadingButton>
             <Button
               onClick={() => Router.push("/core/users")}
               variant="outlined"
