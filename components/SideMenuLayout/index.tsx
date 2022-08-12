@@ -1,8 +1,8 @@
 import { Grid } from "@mui/material";
 import { PropsWithChildren } from "react";
 import Logo from "@/components/Logo";
-import SideMenu from "@/components/SideMenu";
-import TopMenu from "@/components/TopMenu";
+import SideMenu from "@/components/SideMenuLayout/SideMenu";
+import TopMenu from "@/components/SideMenuLayout/TopMenu";
 
 const SideMenuLayout: any = ({ children }: PropsWithChildren<{}>) => {
     const menuSize = 2;
