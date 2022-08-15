@@ -11,14 +11,14 @@ interface MyAppProps extends AppProps {
 }
 const clientSideEmotionCache = createEmotionCache();
 
-const lightTheme = createTheme(darkThemeOptions);
+const theme = createTheme(themeSelector());
 
 const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   return (
     <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <SessionLogin />
         <Component {...pageProps} />
