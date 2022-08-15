@@ -1,18 +1,30 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
-import Head from 'next/head'
-import SessionLogin from '@/components/SessionLogin'
+import { AppProps } from 'next/app';
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+import { EmotionCache } from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
+import createEmotionCache from '@/styles/createEmotionCache';
+import darkThemeOptions from '@/styles/theme/dark';
+import SessionLogin from '@/components/SessionLogin';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <SessionLogin />
-      <Component {...pageProps} />
-    </>
-  )
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache;
 }
+const clientSideEmotionCache = createEmotionCache();
 
-export default MyApp
+const lightTheme = createTheme(darkThemeOptions);
+
+const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  return (
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={lightTheme}>
+        <CssBaseline />
+        <SessionLogin />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </CacheProvider>
+  );
+};
+
+export default MyApp;
