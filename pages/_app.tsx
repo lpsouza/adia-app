@@ -3,7 +3,7 @@ import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import { EmotionCache } from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '@/styles/createEmotionCache';
-import Loader from '@/components/SessionLogin';
+import Loader from '@/components/Loader';
 import themeSelector from '@/styles/themeSelector';
 
 interface MyAppProps extends AppProps {
