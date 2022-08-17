@@ -5,12 +5,26 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 
 const UserForm = ({ email }: any) => {
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
+  const [newEmail, setNewEmail] = useState(email);
+  const [newPassword, setNewPassword] = useState("");
+
+  const handleSave = async () => {
+    setLoading(true);
+    if (newEmail !== "" && newPassword !== "") {
+      await CoreService.users.post({ name, email: newEmail, password: newPassword });
+    } else {
+      await CoreService.users.put({ name, email });
+    }
+    setLoading(false);
+    Router.push("/core/users/list");
+  }
 
   useEffect(() => {
     (async () => {
       if (email) {
-        const user = await CoreService.users.get(email);
+        const user = await (await CoreService.users.get(email)).json();
         if (user) {
           setName(user.name);
         }
@@ -35,6 +49,7 @@ const UserForm = ({ email }: any) => {
                 variant="outlined"
                 fullWidth
                 value={name}
+                onChange={(e) => setName(e.target.value)}
               />
               <TextField
                 id="email"
@@ -42,21 +57,23 @@ const UserForm = ({ email }: any) => {
                 variant="outlined"
                 fullWidth
                 value={email}
+                disabled={email}
+                onChange={(e) => setNewEmail(e.target.value)}
               />
-              <TextField
+              {!email && <TextField
                 id="password"
                 label="Senha"
                 variant="outlined"
                 type="password"
                 fullWidth
-              // value={password}
-              />
+                onChange={(e) => setNewPassword(e.target.value)}
+              />}
             </Stack>
           </CardContent>
           <CardActions sx={{ paddingLeft: 2 }}>
             <LoadingButton
-              // onClick={ }
-              // loading={ }
+              onClick={() => handleSave()}
+              loading={loading}
               variant="contained"
             >{!email && "Adicionar" || "Editar"}</LoadingButton>
             <Button

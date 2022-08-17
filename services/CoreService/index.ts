@@ -54,7 +54,7 @@ const CoreService = {
           "Authorization": `Bearer ${window.localStorage.getItem("access_token")}`
         }
       });
-      return response.json();
+      return response;
     },
     post: async (user: any) => {
       const response = await fetch(`${publicRuntimeConfig.CORE_API}/users`, {
@@ -65,7 +65,28 @@ const CoreService = {
         },
         body: JSON.stringify(user)
       });
-      return response.json();
+      return response;
+    },
+    put: async (user: any) => {
+      const response = await fetch(`${publicRuntimeConfig.CORE_API}/users/${user.email}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${window.localStorage.getItem("access_token")}`
+        },
+        body: JSON.stringify(user)
+      });
+      return response;
+    },
+    delete: async (email: string) => {
+      const response = await fetch(`${publicRuntimeConfig.CORE_API}/users/${email}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${window.localStorage.getItem("access_token")}`
+        }
+      });
+      return response;
     }
   }
 }

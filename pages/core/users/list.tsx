@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import {
-  Box, Button, ButtonGroup, Card, CardContent, Stack,
+  Box, Button, ButtonGroup, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Stack,
 } from "@mui/material";
 import {
   DataGrid,
@@ -21,6 +21,7 @@ import SideMenuLayout from "@/components/SideMenuLayout";
 const UsersListPage = () => {
   const [rows, setRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([] as any);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const columns: GridColDef[] = [
     { field: "name", headerName: "Nome completo", width: 200 },
@@ -28,9 +29,17 @@ const UsersListPage = () => {
     { field: "role", headerName: "Função", width: 150 }
   ];
 
+  const handleDelete = async () => {
+    selectedRows.map(async (row: any) => {
+      await CoreService.users.delete(row);
+    });
+    setRows(await (await CoreService.users.get()).json());
+    setDeleteDialogOpen(false);
+  }
+
   useEffect(() => {
     (async () => {
-      setRows(await CoreService.users.get());
+      setRows(await (await CoreService.users.get()).json());
     })();
   }, []);
 
@@ -69,6 +78,7 @@ const UsersListPage = () => {
                   startIcon={<Remove />}
                   disabled={selectedRows.length === 0}
                   color="error"
+                  onClick={() => setDeleteDialogOpen(true)}
                 >
                   Deletar
                 </Button>
@@ -80,6 +90,7 @@ const UsersListPage = () => {
                 rowsPerPageOptions={[5]}
                 getRowId={(row) => row.email}
                 checkboxSelection
+                isRowSelectable={(param) => param.row.role !== "owner"}
                 autoHeight
                 onSelectionModelChange={(selectedRows) => setSelectedRows(selectedRows)}
                 localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
@@ -88,6 +99,21 @@ const UsersListPage = () => {
           </CardContent>
         </Card>
       </Box>
+      <Dialog open={deleteDialogOpen}>
+        <DialogTitle>Deletar usuário</DialogTitle>
+        <DialogContent>
+          <p>Tem certeza que deseja deletar {selectedRows.length > 1 && "estes usuários" || "este usuário"}:</p>
+          <ul>
+            {selectedRows.map((row: any) => (
+              <li key={row}>{row}</li>
+            ))}
+          </ul>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={() => setDeleteDialogOpen(false)}>Cancelar</Button>
+          <Button variant="contained" color="error" onClick={() => handleDelete()}>Deletar</Button>
+        </DialogActions>
+      </Dialog>
     </SideMenuLayout>
   );
 }
