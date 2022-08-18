@@ -30,7 +30,7 @@ const UserForm = ({ email }: any) => {
         }
       }
     })();
-  }, []);
+  }, [email]);
 
   return (
     <>
