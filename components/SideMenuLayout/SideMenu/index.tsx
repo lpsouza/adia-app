@@ -1,5 +1,5 @@
 import themeSelector from "@/styles/themeSelector";
-import { Home, Person } from "@mui/icons-material";
+import { Api, Home, Person } from "@mui/icons-material";
 import { Box, createTheme, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import Router from "next/router";
 
@@ -24,6 +24,12 @@ const SideMenu = () => {
                     <ListItemButton sx={cssButtomMenu} onClick={() => Router.push('/core/users')}>
                         <Person sx={{ marginRight: 1 }} />
                         Usuários
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton sx={cssButtomMenu} onClick={() => Router.push('/core/apps')}>
+                        <Api sx={{ marginRight: 1 }} />
+                        Apps
                     </ListItemButton>
                 </ListItem>
             </List>

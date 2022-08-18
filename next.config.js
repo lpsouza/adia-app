@@ -12,7 +12,12 @@ const redirects = () => [
   {
     source: '/core/users',
     destination: '/core/users/list',
-    permanent: true,
+    permanent: true
+  },
+  {
+    source: '/core/apps',
+    destination: '/core/apps/list',
+    permanent: true
   }
 ];
 
