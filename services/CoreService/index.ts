@@ -39,7 +39,7 @@ const CoreService = {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ token })
+        body: JSON.stringify({ refreshToken: token })
       });
       return response;
     }
