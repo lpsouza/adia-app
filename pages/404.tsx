@@ -1,3 +1,4 @@
+import SinglePageLayout from '@/components/SinglePageLayout';
 import {
   Box,
   Card,
@@ -8,20 +9,20 @@ import {
 
 const Error404Page = () => {
   return (
-    <Box sx={{
-      width: 600,
-      height: 100,
-      margin: "auto",
-      position: "absolute"
-    }}>
-      <Card>
-        <CardHeader title="Erro 404" />
-        <Divider />
-        <CardContent>
-          Página não encontrada.
-        </CardContent>
-      </Card>
-    </Box>
+    <SinglePageLayout>
+      <Box sx={{
+        width: 600,
+        height: 100,
+      }}>
+        <Card>
+          <CardHeader title="Erro 404" />
+          <Divider />
+          <CardContent>
+            Página não encontrada.
+          </CardContent>
+        </Card>
+      </Box>
+    </SinglePageLayout>
   );
 }
 

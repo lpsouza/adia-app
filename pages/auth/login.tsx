@@ -15,6 +15,7 @@ import {
 
 import { LoadingButton } from "@mui/lab";
 import CoreService from "@/services/CoreService";
+import SinglePageLayout from "@/components/SinglePageLayout";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -53,53 +54,54 @@ const LoginPage = () => {
   }
 
   return (
-    <Box sx={{
-      width: 300,
-      height: 300,
-      margin: "auto"
-    }}>
-      <Card>
-        <CardHeader title="Entrar" />
-        <Divider />
-        <CardContent>
-          <Stack spacing={2}>
-            {error && <Alert variant="filled" severity="error">Usuário ou senha estão incorretos. Tente novamente.</Alert>}
-            <TextField
-              required
+    <SinglePageLayout>
+      <Box sx={{
+        width: 300,
+        height: 300
+      }}>
+        <Card>
+          <CardHeader title="Entrar" />
+          <Divider />
+          <CardContent>
+            <Stack spacing={2}>
+              {error && <Alert variant="filled" severity="error">Usuário ou senha estão incorretos. Tente novamente.</Alert>}
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email"
+                onChange={e => setEmail(e.target.value)}
+                error={emptyEmail}
+                helperText={emptyEmail ? "O campo email é obrigatório." : ""}
+              />
+              <TextField
+                required
+                fullWidth
+                id="password"
+                label="Senha"
+                type="password"
+                onChange={e => setPassword(e.target.value)}
+                error={emptyPassword}
+                helperText={emptyPassword ? "O campo senha é obrigatório." : ""}
+              />
+            </Stack>
+          </CardContent>
+          <CardActions>
+            <LoadingButton
+              onClick={handleClick}
+              loading={loading}
+              variant="contained"
               fullWidth
-              id="email"
-              label="Email"
-              onChange={e => setEmail(e.target.value)}
-              error={emptyEmail}
-              helperText={emptyEmail ? "O campo email é obrigatório." : ""}
-            />
-            <TextField
-              required
+            >Entrar</LoadingButton>
+            <Button
+              onClick={() => window.location.href = "/auth/register"}
+              variant="outlined"
               fullWidth
-              id="password"
-              label="Senha"
-              type="password"
-              onChange={e => setPassword(e.target.value)}
-              error={emptyPassword}
-              helperText={emptyPassword ? "O campo senha é obrigatório." : ""}
-            />
-          </Stack>
-        </CardContent>
-        <CardActions>
-          <LoadingButton
-            onClick={handleClick}
-            loading={loading}
-            variant="contained"
-            fullWidth
-          >Entrar</LoadingButton>
-          <Button
-            onClick={() => window.location.href = "/auth/register"}
-            variant="outlined"
-            fullWidth
-          >Registrar</Button>
-        </CardActions>
-      </Card>
-    </Box >
+            >Registrar</Button>
+          </CardActions>
+        </Card>
+      </Box >
+    </SinglePageLayout>
   );
 }
 
