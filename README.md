@@ -1,4 +1,4 @@
-# A.D.I.A. Frontend
+# A.D.I.A. App
 
 This is the frontend of the A.D.I.A. (Automated Digital Intelligence Assistant).
 
@@ -17,5 +17,5 @@ Understand the architecture of the A.D.I.A. [here](https://gist.github.com/lpsou
 ## Running with Docker
 
 ```bash
-docker run -p 3000:3000 -e NEXT_PUBLIC_CORE_API=<CORE-API-URL> --name adia-frontend -d lpsouza/adia-frontend
+docker run -p 3000:3000 -e NEXT_PUBLIC_CORE_API=<CORE-API-URL> --name adia-app -d lpsouza/adia-app
 ```
