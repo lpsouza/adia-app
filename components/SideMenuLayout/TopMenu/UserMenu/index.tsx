@@ -40,7 +40,7 @@ const UserMenu = () => {
                         <ListItemAvatar>
                             <Avatar src={avatar} sx={{ marginLeft: 1 }}></Avatar>
                         </ListItemAvatar>
-                        <ListItemText
+                        <ListItemText sx={{ display: { xs: "none", sm: "block" } }}
                             primary={name}
                             secondary={
                                 <Fragment>

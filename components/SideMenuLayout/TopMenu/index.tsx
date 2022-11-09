@@ -1,14 +1,24 @@
-import { Grid } from "@mui/material";
+import Logo from "@/components/Logo";
+import { Menu } from "@mui/icons-material";
+import { AppBar, Grid, IconButton, styled, Toolbar } from "@mui/material";
 import UserMenu from "./UserMenu";
+
+const ToolbarFlex = styled(Toolbar)({
+    display: "flex",
+    justifyContent: "space-between"
+})
 
 const TopMenu = () => {
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={9}></Grid>
-            <Grid item xs={3}>
+        <AppBar position="sticky">
+            <ToolbarFlex>
+                <IconButton sx={{ display: { xs: "block", sm: "none" } }}>
+                    <Menu />
+                </IconButton>
+                <Logo />
                 <UserMenu />
-            </Grid>
-        </Grid>
+            </ToolbarFlex>
+        </AppBar>
     )
 }
 

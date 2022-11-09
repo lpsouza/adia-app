@@ -9,7 +9,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Inicial</title>
       </Head>
-      <Box sx={{ padding: 3 }}>
+      <Box>
         <h1>Inicial</h1>
       </Box>
     </SideMenuLayout>
