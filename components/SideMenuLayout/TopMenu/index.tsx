@@ -1,6 +1,8 @@
 import Logo from "@/components/Logo";
 import { Menu } from "@mui/icons-material";
-import { AppBar, Grid, IconButton, styled, Toolbar } from "@mui/material";
+import { AppBar, Box, Drawer, Grid, IconButton, styled, Toolbar } from "@mui/material";
+import { useState } from "react";
+import SideMenu from "../SideMenu";
 import UserMenu from "./UserMenu";
 
 const ToolbarFlex = styled(Toolbar)({
@@ -9,16 +11,41 @@ const ToolbarFlex = styled(Toolbar)({
 })
 
 const TopMenu = () => {
+    const drawerWidth = 240;
+    const [mobileOpen, setMobileOpen] = useState(false);
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+
     return (
-        <AppBar position="sticky">
-            <ToolbarFlex>
-                <IconButton sx={{ display: { xs: "block", sm: "none" } }}>
-                    <Menu />
-                </IconButton>
-                <Logo />
-                <UserMenu />
-            </ToolbarFlex>
-        </AppBar>
+        <>
+            <AppBar position="sticky">
+                <ToolbarFlex>
+                    <IconButton sx={{ display: { xs: "block", sm: "none" } }} onClick={handleDrawerToggle}>
+                        <Menu />
+                    </IconButton>
+                    <Logo />
+                    <UserMenu />
+                </ToolbarFlex>
+            </AppBar>
+            <Box component="nav">
+                <Drawer
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                    ModalProps={{
+                        keepMounted: true, // Better open performance on mobile.
+                    }}
+                    sx={{
+                        display: { xs: 'block', sm: 'none' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                    }}
+                >
+                    <SideMenu />
+                </Drawer>
+            </Box>
+        </>
     )
 }
 

@@ -9,7 +9,7 @@ const cssButtomMenu = { borderRadius: "10px" };
 
 const SideMenu = () => {
     return (
-        <Box flex={1} sx={{ display: { xs: "none", sm: "block" } }}>
+        <Box>
             <List>
                 <ListItem disablePadding>
                     <ListItemButton onClick={() => Router.push('/')}>
