@@ -53,51 +53,47 @@ const UsersListPage = () => {
           padding: 2,
         }}
       >
-        <Card>
-          <CardContent>
-            <Stack spacing={2}>
-              <ButtonGroup variant="outlined">
-                <Button
-                  startIcon={<Add />}
-                  disabled={selectedRows.length > 0}
-                  onClick={() => Router.push("/core/users/add")}
-                >
-                  Adicionar
-                </Button>
-                <Button
-                  startIcon={<Edit />}
-                  disabled={selectedRows.length !== 1}
-                  onClick={() => Router.push({
-                    pathname: "/core/users/edit",
-                    query: { email: selectedRows[0] }
-                  })}
-                >
-                  Editar
-                </Button>
-                <Button
-                  startIcon={<Remove />}
-                  disabled={selectedRows.length === 0}
-                  color="error"
-                  onClick={() => setDeleteDialogOpen(true)}
-                >
-                  Deletar
-                </Button>
-              </ButtonGroup>
-              <DataGrid
-                rows={rows}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                getRowId={(row) => row.email}
-                checkboxSelection
-                isRowSelectable={(param) => param.row.role !== "owner"}
-                autoHeight
-                onSelectionModelChange={(selectedRows) => setSelectedRows(selectedRows)}
-                localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-              />
-            </Stack>
-          </CardContent>
-        </Card>
+        <Stack paddingY={2} spacing={2}>
+          <ButtonGroup variant="outlined">
+            <Button
+              startIcon={<Add />}
+              disabled={selectedRows.length > 0}
+              onClick={() => Router.push("/core/users/add")}
+            >
+              Adicionar
+            </Button>
+            <Button
+              startIcon={<Edit />}
+              disabled={selectedRows.length !== 1}
+              onClick={() => Router.push({
+                pathname: "/core/users/edit",
+                query: { email: selectedRows[0] }
+              })}
+            >
+              Editar
+            </Button>
+            <Button
+              startIcon={<Remove />}
+              disabled={selectedRows.length === 0}
+              color="error"
+              onClick={() => setDeleteDialogOpen(true)}
+            >
+              Deletar
+            </Button>
+          </ButtonGroup>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            getRowId={(row) => row.email}
+            checkboxSelection
+            isRowSelectable={(param) => param.row.role !== "owner"}
+            autoHeight
+            onSelectionModelChange={(selectedRows) => setSelectedRows(selectedRows)}
+            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+          />
+        </Stack>
       </Box>
       <Dialog open={deleteDialogOpen}>
         <DialogTitle>Deletar usuário</DialogTitle>
@@ -105,7 +101,7 @@ const UsersListPage = () => {
           <p>Tem certeza que deseja deletar {selectedRows.length > 1 && "estes usuários" || "este usuário"}:</p>
           <ul>
             {selectedRows.map((row: any) => (
-              <li key={row}>{row}</li>
+              <li key={row}>{rows.filter((r: any) => r.email === row)[0]['name']}</li>
             ))}
           </ul>
         </DialogContent>
