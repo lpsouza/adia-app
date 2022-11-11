@@ -11,6 +11,7 @@ const UserForm = ({ id }: any) => {
   const [description, setDescription] = useState("");
   const [endpoint, setEndpoint] = useState("");
   const [token, setToken] = useState("");
+  const [appId, setAppId] = useState("");
 
   const handleSave = async () => {
     setLoading(true);
@@ -28,6 +29,7 @@ const UserForm = ({ id }: any) => {
       if (id) {
         const app = await (await CoreService.apps.get(id)).json();
         if (app) {
+          setAppId(app._id);
           setName(app.name);
           setDescription(app.description);
           setEndpoint(app.endpoint);
@@ -48,6 +50,14 @@ const UserForm = ({ id }: any) => {
           <CardHeader title={!id && "Adicionando novo app" || "Editando app"} />
           <CardContent>
             <Stack spacing={2}>
+              {id && <TextField
+                id="token"
+                label="Id"
+                variant="outlined"
+                fullWidth
+                value={appId}
+                disabled={true}
+              />}
               <TextField
                 id="name"
                 label="Nome"
