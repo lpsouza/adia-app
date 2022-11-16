@@ -12,7 +12,7 @@ const UsersEditPage = () => {
       <Head>
         <title>Usuários - Editar</title>
       </Head>
-      <Form email={email} />
+      <Form idx={email} />
     </SideMenuLayout>
   );
 }
