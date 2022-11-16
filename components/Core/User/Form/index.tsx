@@ -4,7 +4,7 @@ import { Box, Button, Card, CardActions, CardContent, CardHeader, Stack, TextFie
 import Router from "next/router";
 import { useEffect, useState } from "react";
 
-const UserForm = ({ email }: any) => {
+const Form = ({ email }: any) => {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [newEmail, setNewEmail] = useState(email);
@@ -88,4 +88,4 @@ const UserForm = ({ email }: any) => {
   );
 }
 
-export default UserForm;
+export default Form;

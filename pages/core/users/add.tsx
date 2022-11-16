@@ -1,7 +1,7 @@
 import Head from "next/head";
 
 import SideMenuLayout from "@/components/SideMenuLayout";
-import UserForm from "@/components/Core/UserForm";
+import Form from "@/components/Core/User/Form";
 
 const UsersAddPage = () => {
   return (
@@ -9,7 +9,7 @@ const UsersAddPage = () => {
       <Head>
         <title>Usuários - Adicionar</title>
       </Head>
-      <UserForm />
+      <Form />
     </SideMenuLayout>
   );
 }

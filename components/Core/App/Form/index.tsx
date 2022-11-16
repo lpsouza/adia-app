@@ -5,7 +5,7 @@ import App from "next/app";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 
-const UserForm = ({ id }: any) => {
+const Form = ({ id }: any) => {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -110,4 +110,4 @@ const UserForm = ({ id }: any) => {
   );
 }
 
-export default UserForm;
+export default Form;

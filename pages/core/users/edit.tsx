@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import SideMenuLayout from "@/components/SideMenuLayout";
-import UserForm from "@/components/Core/UserForm";
+import Form from "@/components/Core/User/Form";
 
 const UsersEditPage = () => {
   const router = useRouter()
@@ -12,7 +12,7 @@ const UsersEditPage = () => {
       <Head>
         <title>Usuários - Editar</title>
       </Head>
-      <UserForm email={email} />
+      <Form email={email} />
     </SideMenuLayout>
   );
 }
