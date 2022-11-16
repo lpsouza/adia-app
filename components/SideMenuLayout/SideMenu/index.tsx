@@ -1,11 +1,8 @@
-import themeSelector from "@/styles/themeSelector";
-import { Api, Home, Person } from "@mui/icons-material";
-import { Box, createTheme, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Typography } from "@mui/material";
+import { Home } from "@mui/icons-material";
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import Router from "next/router";
 
-const theme = createTheme(themeSelector());
-
-const cssButtomMenu = { borderRadius: "10px" };
+import CoreMenu from '@/components/Core/Menu';
 
 const SideMenu = () => {
     return (
@@ -20,28 +17,7 @@ const SideMenu = () => {
                     </ListItemButton>
                 </ListItem>
             </List>
-            <List subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                    Gerenciamento
-                </ListSubheader>
-            }>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={() => Router.push('/core/users')}>
-                        <ListItemIcon>
-                            <Person />
-                        </ListItemIcon>
-                        <ListItemText>Usuários</ListItemText>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={() => Router.push('/core/apps')}>
-                        <ListItemIcon>
-                            <Api />
-                        </ListItemIcon>
-                        <ListItemText>Apps</ListItemText>
-                    </ListItemButton>
-                </ListItem>
-            </List>
+            <CoreMenu />
         </Box>
     )
 }
