@@ -30,8 +30,8 @@ const List = () => {
     const handleDelete = async () => {
         selectedRows.map(async (row: any) => {
             await CoreService.apps.delete(row);
+            setRows(await (await CoreService.apps.get()).json());
         });
-        setRows(await (await CoreService.apps.get()).json());
         setDeleteDialogOpen(false);
     }
 
@@ -89,7 +89,7 @@ const List = () => {
                     <p>Tem certeza que deseja deletar {selectedRows.length > 1 && "estes apps" || "este app"}:</p>
                     <ul>
                         {selectedRows.map((row: any) => (
-                            <li key={row}>{rows.filter((r: any) => r._id === row)[0]['name']}</li>
+                            <li key={row}>{row}</li>
                         ))}
                     </ul>
                 </DialogContent>
