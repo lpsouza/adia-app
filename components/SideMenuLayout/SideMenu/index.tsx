@@ -3,6 +3,7 @@ import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from 
 import Router from "next/router";
 
 import CoreMenu from '@/components/Core/Menu';
+import FinanceMenu from '@/components/Finance/Menu';
 
 const SideMenu = () => {
     return (
@@ -17,6 +18,7 @@ const SideMenu = () => {
                     </ListItemButton>
                 </ListItem>
             </List>
+            <FinanceMenu />
             <CoreMenu />
         </Box>
     )

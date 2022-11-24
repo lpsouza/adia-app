@@ -5,6 +5,7 @@ const nextConfig = {
   publicRuntimeConfig: {
     // Will be available on both server and client
     CORE_API: process.env.NEXT_PUBLIC_CORE_API,
+    FINANCE_API_ID: process.env.NEXT_PUBLIC_FINANCE_API_ID,
   }
 }
 
@@ -17,6 +18,11 @@ const redirects = () => [
   {
     source: '/core/apps',
     destination: '/core/apps/list',
+    permanent: true
+  },
+  {
+    source: '/finance/transactions',
+    destination: '/finance/transactions/list',
     permanent: true
   }
 ];
