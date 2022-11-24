@@ -27,7 +27,7 @@ const Form = ({ idx }: any) => {
   useEffect(() => {
     (async () => {
       if (idx) {
-        const app = await (await CoreService.apps.get(idx)).json();
+        const app = await (await CoreService.apps.getById(idx)).json();
         if (app) {
           setId(app._id);
           setName(app.name);

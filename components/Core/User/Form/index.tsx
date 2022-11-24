@@ -25,7 +25,7 @@ const Form = ({ idx }: any) => {
   useEffect(() => {
     (async () => {
       if (idx) {
-        const user = await (await CoreService.users.get(idx)).json();
+        const user = await (await CoreService.users.getByEmail(idx)).json();
         if (user) {
           setName(user.name);
         }
