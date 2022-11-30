@@ -1,4 +1,4 @@
-import { Api, Payments, Person } from "@mui/icons-material";
+import { AccountBalanceWallet, Api, Payments, Person } from "@mui/icons-material";
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from "@mui/material";
 import Router from "next/router";
 
@@ -14,7 +14,15 @@ const Menu = () => {
                     <ListItemIcon>
                         <Payments />
                     </ListItemIcon>
-                    <ListItemText>Transações</ListItemText>
+                    <ListItemText>Lançamentos</ListItemText>
+                </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+                <ListItemButton onClick={() => Router.push('/finance/wallets')}>
+                    <ListItemIcon>
+                        <AccountBalanceWallet />
+                    </ListItemIcon>
+                    <ListItemText>Carteiras</ListItemText>
                 </ListItemButton>
             </ListItem>
         </List>

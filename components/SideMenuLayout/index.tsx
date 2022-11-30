@@ -14,7 +14,7 @@ const SideMenuLayout: any = ({ children }: PropsWithChildren<{}>) => {
                 <Box flex={1} sx={{ display: { xs: "none", sm: "block" } }}>
                     <SideMenu />
                 </Box>
-                <Box flex={4}>
+                <Box flex={7} sx={{ paddingRight: "20px" }}>
                     {children}
                 </Box>
             </Stack>
