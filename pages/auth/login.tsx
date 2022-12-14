@@ -9,8 +9,10 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  Link,
   Stack,
-  TextField
+  TextField,
+  Typography
 } from "@mui/material";
 
 import { LoadingButton } from "@mui/lab";
@@ -100,6 +102,7 @@ const LoginPage = () => {
             >Registrar</Button>
           </CardActions>
         </Card>
+        <Typography variant="body2" align="center" sx={{ mt: 2 }}>Para acessar o portal antigo, <Link href="https://home.luizsouza.com">clique aqui</Link>.</Typography>
       </Box >
     </SinglePageLayout>
   );
