@@ -2,16 +2,19 @@ import Head from "next/head";
 
 import SideMenuLayout from "@/components/SideMenuLayout";
 import List from '@/components/Finance/Transaction/List'
+import { useRouter } from "next/router";
 
-const UsersListPage = () => {
+const TransactionsListPage = () => {
+  const router = useRouter()
+  const { wallet } = router.query
   return (
     <SideMenuLayout>
       <Head>
-        <title>Transações</title>
+        <title>Lançamentos</title>
       </Head>
-      <List />
+      <List idx={wallet} />
     </SideMenuLayout>
   );
 }
 
-export default UsersListPage;
+export default TransactionsListPage;

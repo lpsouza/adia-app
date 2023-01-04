@@ -1,9 +1,8 @@
-import Router from "next/router";
 import { useEffect, useState } from "react";
 import {
     Avatar,
     Box,
-    Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Tooltip,
+    Button, ButtonGroup, Stack, Tooltip,
 } from "@mui/material";
 import {
     DataGrid,
@@ -12,35 +11,41 @@ import {
     GridRenderCellParams,
     ptBR,
 } from '@mui/x-data-grid';
-import {
-    Add,
-    Edit,
-    Remove
-} from "@mui/icons-material";
 
 import DateHelper from "@/helpers/Date";
-import NumberHelper from "@/helpers/Number";
 
 import FinanceService from "@/services/FinanceService";
 import React from "react";
 import { clsx } from "clsx";
 import md5 from "blueimp-md5";
+import { AccountBalance, CreditCard, Savings } from "@mui/icons-material";
+import BrasilApiService from "@/services/BrasilApiService";
 
-const List = () => {
+const List = ({ idx }: any) => {
     const [rows, setRows] = useState([]);
 
     const [filterDate, setFilterDate] = useState(new Date());
+
+    const filterWallet = idx ? [{ columnField: 'walletId', operatorValue: 'equals', value: idx }] : [];
 
     const descriptionRender = (params: GridRenderCellParams<string>) => (
         <Tooltip title={<React.Fragment>{params.value}</React.Fragment>} className="MuiDataGrid-cellContent"><span>{params.value}</span></Tooltip>
     );
 
-    const walletUserRender = (params: GridRenderCellParams<string>) => (
+    const userRender = (params: GridRenderCellParams<string>) => (
         <Avatar src={`https://www.gravatar.com/avatar/${md5(params.value || Math.random().toString())}?d=monsterid`} />
     )
 
     const amountRender = (params: GridRenderCellParams<number>) => (
-        <span className="MuiDataGrid-cellContent">{NumberHelper.CurrencyPtBr(params.value || 0)}</span>
+        <span className="MuiDataGrid-cellContent">{(params.value || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
+    );
+
+    const walletTypeRender = (params: GridRenderCellParams<string>) => (
+        <span className="MuiDataGrid-cellContent">
+            {params.value === "bank" && <Tooltip title="Banco"><AccountBalance /></Tooltip>}
+            {params.value === "creditcard" && <Tooltip title="Cartão de Crédito"><CreditCard /></Tooltip>}
+            {params.value === "saving" && <Tooltip title="Cofrinho"><Savings /></Tooltip>}
+        </span>
     );
 
     const amountClassName = (params: GridCellParams<number>) => {
@@ -55,24 +60,26 @@ const List = () => {
         { field: "date", headerName: "Data", width: 110 },
         { field: "description", headerName: "Descrição", minWidth: 500, flex: 1, renderCell: descriptionRender },
         { field: "amount", headerName: "Valor", width: 100, align: "right", renderCell: amountRender, cellClassName: amountClassName },
-        { field: "walletName", headerName: "Carteira", width: 150 },
-        { field: "walletUser", headerName: "Usuário", width: 100, renderCell: walletUserRender }
+        { field: "walletType", headerName: "Carteira", width: 90, renderCell: walletTypeRender },
+        { field: "bank", headerName: "Banco", width: 200 },
+        { field: "user", headerName: "Usuário", width: 100, renderCell: userRender },
+        { field: "walletId", headerName: "ID da Carteira", width: 100 }
     ];
 
     const handleMonth = async (monthCount: number) => {
         setFilterDate(currentDate => DateHelper.AddMonths(currentDate, monthCount));
         const rowsData = await (await FinanceService.transactions.getByDate(filterDate)).json();
-        const wallets = await (await FinanceService.wallets.get()).json();
-        setRows(rowsData.map((row: any) => {
+        setRows(await Promise.all(rowsData.map(async (row: any) => {
             const date = new Date(row.date);
-            const wallet = wallets.filter((w: any) => w._id === row.walletId)[0] || {};
+            const wallet = await (await FinanceService.wallets.getById(row.walletId)).json();
             return {
                 ...row,
                 date: DateHelper.DatePtBr(date),
-                walletName: wallet.name,
-                walletUser: wallet.user
+                walletType: wallet.type,
+                bank: (await (await BrasilApiService.banks.getById(wallet.bankId)).json()).name || "Desconhecido",
+                user: wallet.user
             }
-        }));
+        })) as any);
     }
 
     useEffect(() => {
@@ -106,7 +113,11 @@ const List = () => {
                     pageSize={100}
                     rowsPerPageOptions={[100]}
                     getRowId={(row) => row._id}
-                    initialState={{ sorting: { sortModel: [{ field: 'date', sort: 'desc' }] } }}
+                    initialState={{
+                        sorting: { sortModel: [{ field: 'date', sort: 'desc' }] },
+                        filter: { filterModel: { items: filterWallet } },
+                        columns: { columnVisibilityModel: { walletId: false } }
+                    }}
                     autoHeight
                     localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 />
