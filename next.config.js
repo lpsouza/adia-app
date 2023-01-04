@@ -24,6 +24,11 @@ const redirects = () => [
     source: '/finance/transactions',
     destination: '/finance/transactions/list',
     permanent: true
+  },
+  {
+    source: '/finance/wallets',
+    destination: '/finance/wallets/list',
+    permanent: true
   }
 ];
 
