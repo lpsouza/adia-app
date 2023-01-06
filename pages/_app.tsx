@@ -2,13 +2,18 @@ import { AppProps } from 'next/app';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import { EmotionCache } from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
+import { SessionProvider } from "next-auth/react";
 import createEmotionCache from '@/styles/createEmotionCache';
-import Loader from '@/components/Loader';
 import themeSelector from '@/styles/themeSelector';
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
+  expires: string;
+  pageProps: {
+    session: any;
+  };
 }
+
 const clientSideEmotionCache = createEmotionCache();
 
 const theme = createTheme(themeSelector());
@@ -20,8 +25,9 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Loader />
-        <Component {...pageProps} />
+        <SessionProvider session={pageProps.session}>
+          <Component {...pageProps} />
+        </SessionProvider>
       </ThemeProvider>
     </CacheProvider>
   );

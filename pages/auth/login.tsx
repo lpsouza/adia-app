@@ -1,111 +1,41 @@
-import { ReactElement, useState } from "react";
+import SinglePageLayout from "@/components/SinglePageLayout"
 import Router from "next/router";
-import {
-  Alert,
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Divider,
-  Link,
-  Stack,
-  TextField,
-  Typography
-} from "@mui/material";
+import { getProviders, signIn, useSession } from "next-auth/react"
+import Loader from "@/components/Loader";
+import { Box, Button, Link, Typography } from "@mui/material";
 
-import { LoadingButton } from "@mui/lab";
-import CoreService from "@/services/CoreService";
-import SinglePageLayout from "@/components/SinglePageLayout";
+const SignIn = ({ providers, callbackUrl }: any) => {
+  const { status } = useSession()
 
-const LoginPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [email, setEmail] = useState("");
-  const [emptyEmail, setEmptyEmail] = useState(false);
-  const [password, setPassword] = useState("");
-  const [emptyPassword, setEmptyPassword] = useState(false);
-  const handleClick = async () => {
-    setLoading(true);
-    setEmptyEmail(false);
-    setEmptyPassword(false);
-    if (email === "") {
-      setEmptyEmail(true);
-    }
-    if (password === "") {
-      setEmptyPassword(true);
-    }
-    if (email !== "" && password !== "") {
-      const login = await CoreService.auth.login(email, password);
-
-      if (login.status === 200) {
-        const data = await login.json();
-        window.localStorage.setItem("access_token", data.access);
-        window.localStorage.setItem("refresh_token", data.refresh);
-        const tokenInfo = await CoreService.auth.token(data.access)
-        const tokenData = await tokenInfo.json();
-        window.localStorage.setItem("name", tokenData.name);
-        window.localStorage.setItem("email", tokenData.email);
-        Router.push("/");
-      } else {
-        setError(true);
-      }
-    }
-    setLoading(false);
+  if (status === "unauthenticated") {
+    return (
+      <SinglePageLayout>
+        {Object.values(providers).map((provider: any) => (
+          <Box key={provider.name} sx={{ textAlign: "center" }}>
+            <Typography variant="h5" align="center" sx={{ pb: 5 }}>Bem vindo a Sparck</Typography>
+            <Button variant="contained" size="large" onClick={() => signIn(provider.id)}>
+              Entrar com {provider.name}
+            </Button>
+            <Typography variant="body2" align="center" sx={{ pt: 5 }}>Para acessar a ADIA, <Link href="https://home.luizsouza.com">clique aqui</Link>.</Typography>
+          </Box>
+        ))}
+      </SinglePageLayout>
+    )
   }
 
-  return (
-    <SinglePageLayout>
-      <Box sx={{
-        width: 300,
-        height: 300
-      }}>
-        <Card>
-          <CardHeader title="Entrar" />
-          <Divider />
-          <CardContent>
-            <Stack spacing={2}>
-              {error && <Alert variant="filled" severity="error">Usuário ou senha estão incorretos. Tente novamente.</Alert>}
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email"
-                onChange={e => setEmail(e.target.value)}
-                error={emptyEmail}
-                helperText={emptyEmail ? "O campo email é obrigatório." : ""}
-              />
-              <TextField
-                required
-                fullWidth
-                id="password"
-                label="Senha"
-                type="password"
-                onChange={e => setPassword(e.target.value)}
-                error={emptyPassword}
-                helperText={emptyPassword ? "O campo senha é obrigatório." : ""}
-              />
-            </Stack>
-          </CardContent>
-          <CardActions>
-            <LoadingButton
-              onClick={handleClick}
-              loading={loading}
-              variant="contained"
-              fullWidth
-            >Entrar</LoadingButton>
-            <Button
-              onClick={() => window.location.href = "/auth/register"}
-              variant="outlined"
-              fullWidth
-            >Registrar</Button>
-          </CardActions>
-        </Card>
-        <Typography variant="body2" align="center" sx={{ mt: 2 }}>Para acessar o portal antigo, <Link href="https://home.luizsouza.com">clique aqui</Link>.</Typography>
-      </Box >
-    </SinglePageLayout>
-  );
+  if (status === "authenticated") {
+    Router.push(callbackUrl);
+  }
+
+  return <Loader />
 }
 
-export default LoginPage;
+export const getServerSideProps = async (context: any) => {
+  const providers = await getProviders()
+  const callbackUrl = context.query.callbackUrl || "/"
+  return {
+    props: { providers, callbackUrl },
+  }
+}
+
+export default SignIn;

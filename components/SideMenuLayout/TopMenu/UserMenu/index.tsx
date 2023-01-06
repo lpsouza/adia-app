@@ -1,10 +1,14 @@
-import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
-import md5 from "blueimp-md5";
+import { useSession, signOut } from "next-auth/react";
+import { randomUUID } from "crypto";
+
+import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
 import { ExitToApp } from "@mui/icons-material";
-import Router from "next/router";
+
 
 const UserMenu = () => {
+    const { data } = useSession();
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -19,14 +23,13 @@ const UserMenu = () => {
     };
 
     const handleLogoff = (): void => {
-        window.localStorage.clear();
-        Router.push('/auth/login');
+        signOut();
     }
 
     useEffect(() => {
-        setName(window.localStorage.getItem('name') || 'John Doe');
-        setEmail(window.localStorage.getItem('email') || 'john.doe@foobar.com');
-        setAvatar(`https://www.gravatar.com/avatar/${md5(window.localStorage.getItem('email') || Math.random().toString())}?d=monsterid`);
+        setName(data?.user?.name || 'John Doe');
+        setEmail(data?.user?.email || 'john.doe@foobar.com');
+        setAvatar(data?.user?.image || `https://www.gravatar.com/avatar/${randomUUID}`);
     }, []);
 
     return (
