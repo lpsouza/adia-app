@@ -14,8 +14,6 @@ import {
     Remove
 } from "@mui/icons-material";
 
-import CoreService from "@/services/CoreService";
-
 const List = () => {
     const [rows, setRows] = useState([]);
     const [selectedRows, setSelectedRows] = useState([] as any);
@@ -29,15 +27,15 @@ const List = () => {
 
     const handleDelete = async () => {
         selectedRows.map(async (row: any) => {
-            await CoreService.apps.delete(row);
-            setRows(await (await CoreService.apps.get()).json());
+            await fetch(`/api/core/apps/${row}`, { method: "DELETE" });
+            setRows(await fetch("/api/core/apps").then((res) => res.json()));
         });
         setDeleteDialogOpen(false);
     }
 
     useEffect(() => {
         (async () => {
-            setRows(await (await CoreService.apps.get()).json());
+            setRows(await fetch("/api/core/apps").then((res) => res.json()));
         })();
     }, []);
 

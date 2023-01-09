@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { randomUUID } from "crypto";
 
 import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
 import { ExitToApp } from "@mui/icons-material";
@@ -27,9 +26,9 @@ const UserMenu = () => {
     }
 
     useEffect(() => {
-        setName(data?.user?.name || 'John Doe');
-        setEmail(data?.user?.email || 'john.doe@foobar.com');
-        setAvatar(data?.user?.image || `https://www.gravatar.com/avatar/${randomUUID}`);
+        setName(`${data?.user?.name}`);
+        setEmail(`${data?.user?.email}`);
+        setAvatar(`${data?.user?.image}`);
     }, []);
 
     return (

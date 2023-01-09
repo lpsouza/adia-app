@@ -2,7 +2,7 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import {
     Avatar,
-    Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Tooltip,
+    Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, ListItem, ListItemAvatar, ListItemText, Stack, Tooltip, Typography,
 } from "@mui/material";
 import {
     DataGrid,
@@ -20,10 +20,7 @@ import {
     Remove,
     Savings
 } from "@mui/icons-material";
-
-import FinanceService from "@/services/FinanceService";
-import md5 from "blueimp-md5";
-import BrasilApiService from "@/services/BrasilApiService";
+import { randomUUID } from "crypto";
 
 const List = () => {
     const [rows, setRows] = useState([]);
@@ -38,14 +35,19 @@ const List = () => {
         </span>
     );
 
-    const userRender = (params: GridRenderCellParams<string>) => (
-        <Avatar src={`https://www.gravatar.com/avatar/${md5(params.value || Math.random().toString())}?d=monsterid`} />
+    const userRender = (params: GridRenderCellParams<{ name: string, email: string, image: string }>) => (
+        <ListItem className="MuiDataGrid-cellContent" sx={{ p: 0 }}>
+            <ListItemAvatar>
+                <Avatar src={`${params.value?.image}`} />
+            </ListItemAvatar>
+            <ListItemText primary={params.value?.name} secondary={params.value?.email} />
+        </ListItem>
     );
 
     const columns: GridColDef[] = [
-        { field: "type", headerName: "Tipo", width: 80, renderCell: typeRender },
-        { field: "bank", headerName: "Banco", width: 200 },
-        { field: "user", headerName: "Usuário", width: 150, renderCell: userRender },
+        { field: "type", headerName: "Tipo", width: 60, renderCell: typeRender },
+        { field: "bankName", headerName: "Banco", minWidth: 200, flex: 1 },
+        { field: "user", headerName: "Usuário", minWidth: 300, flex: 1, renderCell: userRender },
         { field: "amount", headerName: "Saldo atual", width: 150 }
     ];
 
@@ -53,18 +55,26 @@ const List = () => {
         const formData = new FormData();
         formData.append("ofxFile", ofxFile.files[0], ofxFile.files[0].name);
         formData.append("walletId", selectedRows[0]);
-        await FinanceService.ofx.importer(formData);
+        await fetch("/api/finance/ofx/importer", {
+            method: "POST",
+            body: formData
+        });
         setDeleteDialogOpen(false);
     }
 
     useEffect(() => {
         (async () => {
-            const rowsData = await (await FinanceService.wallets.get()).json();
+            const rowsData = await (await fetch("/api/finance/wallets")).json();
+            if (!Array.isArray(rowsData)) {
+                console.error(`Error: ${rowsData.message}`);
+                return;
+            }
+            const users = await (await fetch("/api/core/users")).json();
             setRows(await Promise.all(rowsData.map(async (row: any) => {
                 return {
                     ...row,
                     amount: (10000).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
-                    bank: (await (await BrasilApiService.banks.getById(row.bankId)).json()).name || "Desconhecido",
+                    user: await users.find((user: any) => user.email === row.user)
                 }
             })) as any);
         })();
@@ -118,7 +128,6 @@ const List = () => {
                     getRowId={(row) => row._id}
                     initialState={{ sorting: { sortModel: [{ field: 'bank', sort: 'asc' }] } }}
                     checkboxSelection
-                    isRowSelectable={(param) => param.row.role !== "owner"}
                     autoHeight
                     onSelectionModelChange={(selectedRows) => setSelectedRows(selectedRows)}
                     localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}

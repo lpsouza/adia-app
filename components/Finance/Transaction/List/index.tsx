@@ -14,12 +14,10 @@ import {
 
 import DateHelper from "@/helpers/Date";
 
-import FinanceService from "@/services/FinanceService";
 import React from "react";
 import { clsx } from "clsx";
-import md5 from "blueimp-md5";
 import { AccountBalance, CreditCard, Savings } from "@mui/icons-material";
-import BrasilApiService from "@/services/BrasilApiService";
+import { randomUUID } from "crypto";
 
 const List = ({ idx }: any) => {
     const [rows, setRows] = useState([]);
@@ -33,7 +31,7 @@ const List = ({ idx }: any) => {
     );
 
     const userRender = (params: GridRenderCellParams<string>) => (
-        <Avatar src={`https://www.gravatar.com/avatar/${md5(params.value || Math.random().toString())}?d=monsterid`} />
+        <Avatar src={`https://www.gravatar.com/avatar/${randomUUID}`} />
     )
 
     const amountRender = (params: GridRenderCellParams<number>) => (
@@ -68,15 +66,18 @@ const List = ({ idx }: any) => {
 
     const handleMonth = async (monthCount: number) => {
         setFilterDate(currentDate => DateHelper.AddMonths(currentDate, monthCount));
-        const rowsData = await (await FinanceService.transactions.getByDate(filterDate)).json();
+        const rowsData = await fetch(`/api/finance/transactions?date=${filterDate}`).then(res => res.json());
+        if (!Array.isArray(rowsData)) {
+            console.error(`Error: ${rowsData.message}`);
+            return;
+        }
         setRows(await Promise.all(rowsData.map(async (row: any) => {
             const date = new Date(row.date);
-            const wallet = await (await FinanceService.wallets.getById(row.walletId)).json();
+            const wallet = await (await fetch(`/api/finance/wallets/${row.walletId}`)).json();
             return {
                 ...row,
                 date: DateHelper.DatePtBr(date),
                 walletType: wallet.type,
-                bank: (await (await BrasilApiService.banks.getById(wallet.bankId)).json()).name || "Desconhecido",
                 user: wallet.user
             }
         })) as any);

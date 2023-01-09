@@ -14,5 +14,38 @@ export default NextAuth({
     pages: {
         signIn: "/auth/login",
     },
-    callbacks: {}
+    callbacks: {
+        async signIn({ user, account, profile, email, credentials }) {
+            const { name, email: id, image } = user;
+            const userInDB = await fetch(`${process.env.CORE_API}/users/${id}`);
+            if (userInDB.status === 404) {
+                await fetch(`${process.env.CORE_API}/users`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email: id,
+                        image,
+                    })
+                });
+            } else if (userInDB.status === 200) {
+                const user = await userInDB.json();
+                if (user.name !== name || user.image !== image) {
+                    await fetch(`${process.env.CORE_API}/users/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            name,
+                            image,
+                        })
+                    });
+                }
+            }
+            return true
+        },
+    }
 });

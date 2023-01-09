@@ -9,7 +9,7 @@ const Logo = () => {
                 textAlign: "center",
                 padding: '1rem',
             }}
-        >A.D.I.A.</Typography>
+        >Sparck App</Typography>
     )
 };
 

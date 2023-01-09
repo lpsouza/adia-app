@@ -12,7 +12,7 @@ const SignIn = ({ providers, callbackUrl }: any) => {
       <SinglePageLayout>
         {Object.values(providers).map((provider: any) => (
           <Box key={provider.name} sx={{ textAlign: "center" }}>
-            <Typography variant="h5" align="center" sx={{ pb: 5 }}>Bem vindo a Sparck</Typography>
+            <Typography variant="h5" align="center" sx={{ pb: 5 }}>Bem vindo ao Sparck App</Typography>
             <Button variant="contained" size="large" onClick={() => signIn(provider.id)}>
               Entrar com {provider.name}
             </Button>

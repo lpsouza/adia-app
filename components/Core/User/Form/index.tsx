@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Card, CardActions, CardContent, CardHeader, Stack, TextField } from "@mui/material";
 
-import CoreService from "@/services/CoreService";
-
 const Form = ({ idx }: any) => {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
@@ -14,9 +12,21 @@ const Form = ({ idx }: any) => {
   const handleSave = async () => {
     setLoading(true);
     if (email !== "" && password !== "") {
-      await CoreService.users.post({ name, email: email, password: password });
+      await fetch("/api/core/users", {
+        method: "POST",
+        body: JSON.stringify({ name, email }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     } else {
-      await CoreService.users.put({ name, email: idx });
+      await fetch(`/api/core/users/${idx}`, {
+        method: "PUT",
+        body: JSON.stringify({ name, email: idx }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
     setLoading(false);
     Router.push("/core/users/list");
@@ -25,7 +35,7 @@ const Form = ({ idx }: any) => {
   useEffect(() => {
     (async () => {
       if (idx) {
-        const user = await (await CoreService.users.getByEmail(idx)).json();
+        const user = await fetch(`/api/core/users/${idx}`).then((res) => res.json());
         if (user) {
           setName(user.name);
         }

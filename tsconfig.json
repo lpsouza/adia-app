@@ -29,9 +29,6 @@
       "@/public/*": [
         "public/*"
       ],
-      "@/services/*": [
-        "services/*"
-      ],
       "@/styles/*": [
         "styles/*"
       ]
